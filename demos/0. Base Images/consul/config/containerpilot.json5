@@ -1,0 +1,14 @@
+{
+	consul: "localhost:8500",
+	
+	jobs: [
+		{
+			name: "consul-server",
+			exec: [
+				"/usr/local/bin/start-consul-server"
+			],
+			restarts: "unlimited",
+		}		
+	]
+	
+}

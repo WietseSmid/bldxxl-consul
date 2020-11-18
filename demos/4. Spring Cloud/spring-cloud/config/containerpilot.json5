@@ -1,0 +1,31 @@
+{
+	consul: "localhost:8500",
+	
+	jobs: [
+		{
+			name: "consul",
+			exec: [
+				"/usr/local/bin/start-consul-client"
+			],
+			restarts: "unlimited",
+
+			health: {
+				exec: ["/usr/local/bin/health-check"],
+				interval: 30,
+				ttl: 30,
+				timeout: 30
+			}
+		},
+		{
+			name: "hello-world",
+			exec: ["/usr/local/openjdk-11/bin/java", "-jar", "/usr/local/share/spring-cloud.jar"],
+			restarts: "unlimited",
+
+			when: {
+				source: "consul",
+				once: "healthy"
+			}
+		}
+	]
+	
+}

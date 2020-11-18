@@ -1,0 +1,39 @@
+{
+	consul: "localhost:8500",
+	
+	jobs: [
+		{
+			name: "consul",
+			exec: [
+				"/usr/local/bin/start-consul-client"
+			],
+			restarts: "unlimited",
+
+			health: {
+				exec: ["/usr/local/bin/health-check"],
+				interval: 30,
+				ttl: 30,
+				timeout: 30
+			}
+		},
+		{
+			name: "key-value",
+			exec: ["/usr/local/openjdk-8/bin/java", "-jar", "/usr/local/share/key-value.jar"],
+			port: 8080,
+			restarts: "unlimited",
+
+			health: {
+				exec: ["/usr/local/bin/health-check-java"],
+				interval: 10,
+				ttl: 10,
+				timeout: 10
+			},
+
+			when: {
+				source: "consul",
+				once: "healthy"
+			}
+		}
+	]
+	
+}

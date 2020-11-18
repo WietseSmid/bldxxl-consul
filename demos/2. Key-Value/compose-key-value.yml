@@ -1,0 +1,22 @@
+version: "3.5"
+
+services:
+    consul-server:
+        image: consul-bld:local
+        ports:
+            - "8400:8400"
+            - "8500:8500"
+            - "8600:8600"
+            - "8600:8600/udp"
+        networks:
+            - bld
+            
+    key-value:
+        image: key-value:local
+        ports:
+            - "8080:8080"
+        networks:
+            - bld
+            
+networks:
+    bld:
